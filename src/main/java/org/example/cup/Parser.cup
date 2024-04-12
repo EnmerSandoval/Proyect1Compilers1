@@ -17,32 +17,33 @@ parser code {:
 
 terminal NUEVO_SITIO_WEB, ID, USUARIO_CREACION, FECHA_CREACION, FECHA_MODIFICACION, USUARIO_MODIFICACION,
 BORRAR_SITIO_WEB, NUEVA_PAGINA, TITULO, SITIO, PADRE, MODIFICAR_PAGINA, BORRAR_PAGINA, MODIFICAR_COMPONENTE,
-PAGINA, CLASE, AGREGAR_COMPONENTE, BORRAR_COMPONENTE, ACCION, ACCIONES, PARAMETRO, PARAMETROS, NOMBRE, IGUAL, MENORQUE, MAYORQUE,
+PAGINA, CLASE, AGREGAR_COMPONENTE, BORRAR_COMPONENTE, ACCIONES, PARAMETRO, PARAMETROS, NOMBRE, IGUAL, MENORQUE, MAYORQUE,
 DIAGONAL, COMILLAS, CORCHETEA, CORCHETEC, ATRIBUTO, ACTION, PARRAFO, IMAGEN, VIDEO, MENU, TEXTO, ALINEACION,
 COLOR, ORIGEN, ALTURA, ANCHO, ETIQUETAS, ATRIBUTOS;
 
 non terminal onset, actions, actionSingle, reaction, siteWeb, page, component, addNewSite, deleteSite, newPage, modifyPage, deletePage,
-addComponent, modifyComponent, deleteComponent, id, userCreator, creationDate, modificationDate, modificationUser, site, prePrincipal,
+addComponent, modifyComponent, deleteComponent;
+non terminal String id, userCreator, creationDate, modificationDate, modificationUser, site, prePrincipal,
 endAction, initParameters, title, endParameters, initAtributs, atribut, endAtributs, endParam, principal, textAttribut, pageComponent,
 classComponent,  lineupAttribut, colorAttribut, originAttribut, heightAttribut, wideAttribut, labelAttribut,
-atributClass, endAttribut, principalAttribut, atributExtend;
+atributClass, endAttribut, principalAttribut, atributExtend, initAcction;
 
 start with onset;
 
-onset::= onset actions
-    | actionSingle
+onset::=  actionSingle
+    | actions
     ;
 
 actions::= MENORQUE ACCIONES MAYORQUE reaction MENORQUE DIAGONAL ACCIONES MAYORQUE
         ;
 
-reaction::= actionSingle reaction
+reaction::= reaction actionSingle
         | actionSingle
         ;
 
-actionSingle::= siteWeb
-        | page
-        | component
+actionSingle::= initAcction siteWeb
+        | initAcction page
+        | initAcction component
         ;
 
 siteWeb::= addNewSite
@@ -59,21 +60,23 @@ component::= addComponent
         | deleteComponent
         ;
 
-addNewSite::= MENORQUE ACCION NOMBRE IGUAL COMILLAS NUEVO_SITIO_WEB COMILLAS MAYORQUE
+addNewSite::= NUEVO_SITIO_WEB COMILLAS MAYORQUE
+            initParameters
             id
             userCreator
             creationDate
             modificationDate
             modificationUser
+            endParameters
             endAction
            ;
 
-deleteSite::= MENORQUE ACCION NOMBRE IGUAL COMILLAS BORRAR_SITIO_WEB COMILLAS MAYORQUE
+deleteSite::= BORRAR_SITIO_WEB COMILLAS MAYORQUE
             id
             endAction
             ;
 
-newPage::= MENORQUE ACCION NOMBRE IGUAL COMILLAS NUEVA_PAGINA COMILLAS MAYORQUE
+newPage::=  NUEVA_PAGINA COMILLAS MAYORQUE
             id
             title
             site
@@ -85,12 +88,12 @@ newPage::= MENORQUE ACCION NOMBRE IGUAL COMILLAS NUEVA_PAGINA COMILLAS MAYORQUE
             endAction
             ;
 
-deletePage::= MENORQUE ACCION NOMBRE IGUAL COMILLAS BORRAR_PAGINA COMILLAS MAYORQUE
+deletePage::=  BORRAR_PAGINA COMILLAS MAYORQUE
                id
                endAction
                ;
 
-modifyPage::= MENORQUE ACCION NOMBRE IGUAL COMILLAS MODIFICAR_PAGINA COMILLAS MAYORQUE
+modifyPage::= MODIFICAR_PAGINA COMILLAS MAYORQUE
               initParameters
               id
               title
@@ -98,7 +101,7 @@ modifyPage::= MENORQUE ACCION NOMBRE IGUAL COMILLAS MODIFICAR_PAGINA COMILLAS MA
               endAction
               ;
 
-addComponent::= MENORQUE ACCION NOMBRE IGUAL COMILLAS AGREGAR_COMPONENTE COMILLAS MAYORQUE
+addComponent::= AGREGAR_COMPONENTE COMILLAS MAYORQUE
                 initParameters
                 id
                 pageComponent
@@ -110,13 +113,13 @@ addComponent::= MENORQUE ACCION NOMBRE IGUAL COMILLAS AGREGAR_COMPONENTE COMILLA
                 endAction
                 ;
 
-deleteComponent::= MENORQUE ACCION NOMBRE IGUAL COMILLAS BORRAR_COMPONENTE COMILLAS MAYORQUE
+deleteComponent::= BORRAR_COMPONENTE COMILLAS MAYORQUE
                 id
                 pageComponent
                 endAction
                 ;
 
-modifyComponent::= MENORQUE ACCION NOMBRE IGUAL COMILLAS MODIFICAR_COMPONENTE COMILLAS MAYORQUE
+modifyComponent::= MODIFICAR_COMPONENTE COMILLAS MAYORQUE
                 initParameters
                 id
                 pageComponent
@@ -187,13 +190,13 @@ classComponent::= MENORQUE PARAMETRO NOMBRE IGUAL COMILLAS CLASE COMILLAS MAYORQ
                 endParam
                 ;
 
-atribut::= MENORQUE ATRIBUTO NOMBRE IGUAL COMILLAS atributClass COMILLAS MAYORQUE
+atribut::=  MENORQUE ATRIBUTO NOMBRE IGUAL COMILLAS atributClass COMILLAS MAYORQUE
             CORCHETEA atributExtend CORCHETEC
             endAttribut
             ;
+
 initAtributs::= MENORQUE ATRIBUTOS MAYORQUE
                 ;
-
 
 atributExtend::= textAttribut
         | lineupAttribut
@@ -257,3 +260,7 @@ labelAttribut::= MENORQUE ATRIBUTO NOMBRE IGUAL COMILLAS ETIQUETAS COMILLAS MAYO
 
 endAttribut::= MENORQUE DIAGONAL ATRIBUTO MAYORQUE
                ;
+
+
+initAcction::= MENORQUE ATRIBUTO NOMBRE IGUAL COMILLAS
+            ;
