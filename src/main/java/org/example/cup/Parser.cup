@@ -1,0 +1,259 @@
+package org.example.cup;
+
+import java_cup.runtime;
+
+class Parser;
+
+parser code {:
+    public void syntax_error(Symbol cur_token) {
+            System.out.println("Simbolo con error:" + symbl_name_from_id(cur_token.sym));
+            System.out.println("Linea " + cur_token.left);
+            System.out.println("Columna " + cur_token.right);
+            if (expected_token_ids().isEmpty()) {
+                System.out.println("ya no se esperaba ningun simbolo");
+            }
+        }
+:}
+
+terminal NUEVO_SITIO_WEB, ID, USUARIO_CREACION, FECHA_CREACION, FECHA_MODIFICACION, USUARIO_MODIFICACION,
+BORRAR_SITIO_WEB, NUEVA_PAGINA, TITULO, SITIO, PADRE, MODIFICAR_PAGINA, BORRAR_PAGINA, MODIFICAR_COMPONENTE,
+PAGINA, CLASE, AGREGAR_COMPONENTE, BORRAR_COMPONENTE, ACCION, ACCIONES, PARAMETRO, PARAMETROS, NOMBRE, IGUAL, MENORQUE, MAYORQUE,
+DIAGONAL, COMILLAS, CORCHETEA, CORCHETEC, ATRIBUTO, ACTION, PARRAFO, IMAGEN, VIDEO, MENU, TEXTO, ALINEACION,
+COLOR, ORIGEN, ALTURA, ANCHO, ETIQUETAS, ATRIBUTOS;
+
+non terminal onset, actions, actionSingle, reaction, siteWeb, page, component, addNewSite, deleteSite, newPage, modifyPage, deletePage,
+addComponent, modifyComponent, deleteComponent, id, userCreator, creationDate, modificationDate, modificationUser, site, prePrincipal,
+endAction, initParameters, title, endParameters, initAtributs, atribut, endAtributs, endParam, principal, textAttribut, pageComponent,
+classComponent,  lineupAttribut, colorAttribut, originAttribut, heightAttribut, wideAttribut, labelAttribut,
+atributClass, endAttribut, principalAttribut, atributExtend;
+
+start with onset;
+
+onset::= onset actions
+    | actionSingle
+    ;
+
+actions::= MENORQUE ACCIONES MAYORQUE reaction MENORQUE DIAGONAL ACCIONES MAYORQUE
+        ;
+
+reaction::= actionSingle reaction
+        | actionSingle
+        ;
+
+actionSingle::= siteWeb
+        | page
+        | component
+        ;
+
+siteWeb::= addNewSite
+        | deleteSite
+        ;
+
+page::= newPage
+    | modifyPage
+    | deletePage
+    ;
+
+component::= addComponent
+        | modifyComponent
+        | deleteComponent
+        ;
+
+addNewSite::= MENORQUE ACCION NOMBRE IGUAL COMILLAS NUEVO_SITIO_WEB COMILLAS MAYORQUE
+            id
+            userCreator
+            creationDate
+            modificationDate
+            modificationUser
+            endAction
+           ;
+
+deleteSite::= MENORQUE ACCION NOMBRE IGUAL COMILLAS BORRAR_SITIO_WEB COMILLAS MAYORQUE
+            id
+            endAction
+            ;
+
+newPage::= MENORQUE ACCION NOMBRE IGUAL COMILLAS NUEVA_PAGINA COMILLAS MAYORQUE
+            id
+            title
+            site
+            prePrincipal
+            userCreator
+            creationDate
+            modificationDate
+            modificationUser
+            endAction
+            ;
+
+deletePage::= MENORQUE ACCION NOMBRE IGUAL COMILLAS BORRAR_PAGINA COMILLAS MAYORQUE
+               id
+               endAction
+               ;
+
+modifyPage::= MENORQUE ACCION NOMBRE IGUAL COMILLAS MODIFICAR_PAGINA COMILLAS MAYORQUE
+              initParameters
+              id
+              title
+              endParameters
+              endAction
+              ;
+
+addComponent::= MENORQUE ACCION NOMBRE IGUAL COMILLAS AGREGAR_COMPONENTE COMILLAS MAYORQUE
+                initParameters
+                id
+                pageComponent
+                classComponent
+                endParameters
+                initAtributs
+                atribut
+                endAtributs
+                endAction
+                ;
+
+deleteComponent::= MENORQUE ACCION NOMBRE IGUAL COMILLAS BORRAR_COMPONENTE COMILLAS MAYORQUE
+                id
+                pageComponent
+                endAction
+                ;
+
+modifyComponent::= MENORQUE ACCION NOMBRE IGUAL COMILLAS MODIFICAR_COMPONENTE COMILLAS MAYORQUE
+                initParameters
+                id
+                pageComponent
+                classComponent
+                endParameters
+                initAtributs
+                atribut
+                endAtributs
+                endAction
+                ;
+
+id::= MENORQUE PARAMETRO NOMBRE IGUAL COMILLAS ID COMILLAS MAYORQUE
+        CORCHETEA  CORCHETEC
+        endParam
+        ;
+
+userCreator::= MENORQUE PARAMETRO NOMBRE IGUAL COMILLAS USUARIO_CREACION COMILLAS MAYORQUE
+            CORCHETEA CORCHETEC
+            endParam
+            ;
+
+creationDate::= MENORQUE PARAMETRO NOMBRE IGUAL COMILLAS FECHA_CREACION COMILLAS MAYORQUE
+                CORCHETEA CORCHETEC
+                endParam
+                ;
+
+modificationDate::= MENORQUE PARAMETRO NOMBRE IGUAL COMILLAS FECHA_MODIFICACION COMILLAS MAYORQUE
+                CORCHETEA CORCHETEC
+                endParam
+                ;
+
+modificationUser::= MENORQUE PARAMETRO NOMBRE IGUAL COMILLAS USUARIO_MODIFICACION COMILLAS MAYORQUE
+                CORCHETEA CORCHETEC
+                endParam
+                ;
+
+title::= MENORQUE PARAMETRO NOMBRE IGUAL COMILLAS TITULO COMILLAS MAYORQUE
+        CORCHETEA CORCHETEC
+        endParam
+        ;
+
+site::= MENORQUE PARAMETRO NOMBRE IGUAL COMILLAS SITIO COMILLAS MAYORQUE
+        CORCHETEA CORCHETEC
+        endParam
+        ;
+
+prePrincipal::= principal
+            ;
+
+principal::= MENORQUE PARAMETRO NOMBRE IGUAL COMILLAS PADRE COMILLAS MAYORQUE
+            CORCHETEA CORCHETEC
+            endParam
+            ;
+
+initParameters::= MENORQUE PARAMETROS MAYORQUE
+                ;
+
+endParameters::= MENORQUE DIAGONAL PARAMETROS MAYORQUE
+                ;
+
+pageComponent::= MENORQUE PARAMETRO NOMBRE IGUAL COMILLAS PAGINA COMILLAS MAYORQUE
+                CORCHETEA CORCHETEC
+                endParam
+                ;
+
+classComponent::= MENORQUE PARAMETRO NOMBRE IGUAL COMILLAS CLASE COMILLAS MAYORQUE
+                CORCHETEA atributClass CORCHETEC
+                endParam
+                ;
+
+atribut::= MENORQUE ATRIBUTO NOMBRE IGUAL COMILLAS atributClass COMILLAS MAYORQUE
+            CORCHETEA atributExtend CORCHETEC
+            endAttribut
+            ;
+initAtributs::= MENORQUE ATRIBUTOS MAYORQUE
+                ;
+
+
+atributExtend::= textAttribut
+        | lineupAttribut
+        | colorAttribut
+        | originAttribut
+        | heightAttribut
+        | wideAttribut
+        | principalAttribut
+        | labelAttribut
+        ;
+
+endAction::= MENORQUE DIAGONAL ACTION MAYORQUE
+        ;
+
+atributClass::= TITULO
+                | PARRAFO
+                | IMAGEN
+                | VIDEO
+                | MENU
+                ;
+
+textAttribut::= MENORQUE ATRIBUTO NOMBRE IGUAL COMILLAS TEXTO COMILLAS MAYORQUE
+               CORCHETEA CORCHETEC
+               endAttribut
+               ;
+
+lineupAttribut::= MENORQUE ATRIBUTO NOMBRE IGUAL COMILLAS ALINEACION COMILLAS MAYORQUE
+                  CORCHETEA CORCHETEC
+                  endAttribut
+                  ;
+
+colorAttribut::= MENORQUE ATRIBUTO NOMBRE IGUAL COMILLAS COLOR COMILLAS MAYORQUE
+                 CORCHETEA CORCHETEC
+                 endAttribut
+                 ;
+
+originAttribut::= MENORQUE ATRIBUTO NOMBRE IGUAL COMILLAS ORIGEN COMILLAS MAYORQUE
+                 CORCHETEA CORCHETEC
+                 endAttribut
+                 ;
+
+heightAttribut::= MENORQUE ATRIBUTO NOMBRE IGUAL COMILLAS ALTURA COMILLAS MAYORQUE
+                 CORCHETEA CORCHETEC
+                 endAttribut
+                 ;
+
+wideAttribut::= MENORQUE ATRIBUTO NOMBRE IGUAL COMILLAS ANCHO COMILLAS MAYORQUE
+                CORCHETEA CORCHETEC
+                endAttribut
+                ;
+
+principalAttribut::= MENORQUE ATRIBUTO NOMBRE IGUAL COMILLAS PADRE COMILLAS MAYORQUE
+                CORCHETEA CORCHETEC
+                endAttribut
+                ;
+
+labelAttribut::= MENORQUE ATRIBUTO NOMBRE IGUAL COMILLAS ETIQUETAS COMILLAS MAYORQUE
+                CORCHETEA CORCHETEC
+                endAttribut
+                ;
+
+endAttribut::= MENORQUE DIAGONAL ATRIBUTO MAYORQUE
+               ;
