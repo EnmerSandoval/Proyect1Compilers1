@@ -1,6 +1,10 @@
 org/example/views/TextEditor$3.class
 org/example/Main.class
-org/example/views/TextEditor$1.class
 org/example/views/TextEditor.class
+org/example/lexer/Lexer.class
+org/example/cup/Parser$CUP$Parser$actions.class
+org/example/cup/ParserSym.class
+org/example/views/TextEditor$1.class
 org/example/views/TextEditor$2.class
+org/example/cup/Parser.class
 org/example/server/Server.class

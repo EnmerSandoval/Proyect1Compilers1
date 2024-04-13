@@ -4,9 +4,13 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileReader;
+import java.io.StringReader;
 import java.net.Socket;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import org.example.cup.Parser;
+import org.example.cup.ParserSym;
+import org.example.lexer.Lexer;
 
 /**
  * @author enmer
@@ -190,7 +194,7 @@ public class TextEditor extends javax.swing.JFrame {
 
     private void sendTextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendTextButtonActionPerformed
         // TODO add your handling code here:
-        String IP = "127.0.0.1";
+        /*String IP = "127.0.0.1";
         int port = 8080;
         try {
             Socket socket = new Socket(IP, port);
@@ -200,7 +204,18 @@ public class TextEditor extends javax.swing.JFrame {
             socket.close();
         } catch (Exception e) {
             e.printStackTrace();
+        }*/
+        try {
+            StringReader sr = new StringReader(textEditorArea.getText());
+            Lexer lex = new Lexer(new StringReader(textEditorArea.getText()));
+            Parser sintax = new Parser(lex);
+            System.out.println(sintax.parse());
+            System.out.println(textEditorArea.getText());
+        } catch (Exception e) {
+            System.out.println("----> " + e.getMessage());
+            e.printStackTrace();
         }
+
     }//GEN-LAST:event_sendTextButtonActionPerformed
 
     /**
