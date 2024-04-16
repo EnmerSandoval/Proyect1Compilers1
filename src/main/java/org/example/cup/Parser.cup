@@ -20,15 +20,16 @@ BORRAR_SITIO_WEB, NUEVA_PAGINA, TITULO, SITIO, PADRE, MODIFICAR_PAGINA, BORRAR_P
 PAGINA, CLASE, AGREGAR_COMPONENTE, BORRAR_COMPONENTE, PARAMETRO, PARAMETROS, NOMBRE, IGUAL, MENORQUE, MAYORQUE,
 DIAGONAL, COMILLAS, CORCHETEA, CORCHETEC, ATRIBUTO, PARRAFO, IMAGEN, VIDEO, MENU, TEXTO, ALINEACION,
 COLOR, ORIGEN, ALTURA, ANCHO, ETIQUETAS,  INITACCIONES, ENDACCIONES, INITACCION, ENDACCION, INITPARAMETRO, ENDPARAMETRO, INITATRIBUT, ENDATRIBUT,
-INITPARAMETROS, ENDPARAMETROS, INITATRIBUTOS, ENDATRIBUTOS;
+INITPARAMETROS, ENDPARAMETROS, INITATRIBUTOS, ENDATRIBUTOS, HEXADECIMAL, IDENTIFICADOR;
 
-
-non terminal onset, actions, actionSingle, reaction, siteWeb, page, component, addNewSite, deleteSite, newPage, modifyPage, deletePage,
+non terminal WebSite addNewSite, siteWeb;
+non terminal String id;
+non terminal onset, actions, actionSingle, reaction, page, component, deleteSite, newPage, modifyPage, deletePage,
 addComponent, modifyComponent, deleteComponent;
-non terminal String id, userCreator, creationDate, modificationDate, modificationUser, site, prePrincipal,
+non terminal userCreator, creationDate, modificationDate, modificationUser, site, prePrincipal,
  initParameters, title, endParameters,  atribut, endAtributs, principal, textAttribut, pageComponent,
 classComponent,  lineupAttribut, colorAttribut, originAttribut, heightAttribut, wideAttribut, labelAttribut,
-atributClass, principalAttribut, atributExtend, initAcction, initParametro;
+atributClass, principalAttribut, atributExtend, initAcction, initParametro, initAttribut;
 
 start with onset;
 
@@ -48,7 +49,7 @@ actionSingle::= initAcction siteWeb
         | initAcction component
         ;
 
-siteWeb::= addNewSite
+siteWeb::= addNewSite:addNewSite {:RESULT = addNewSite;:}
         | deleteSite
         ;
 
@@ -64,18 +65,21 @@ component::= addComponent
         ;
 
 addNewSite::= NUEVO_SITIO_WEB COMILLAS MAYORQUE
-            initParameters
-            id
-            userCreator
-            creationDate
-            modificationDate
-            modificationUser
-            endParameters
+            INITPARAMETROS
+            id:id
+            userCreator:userCreator
+            creationDate:crdDate
+            modificationDate:mdfyDate
+            modificationUser:mdfyUsr
+            ENDPARAMETROS
             ENDACCION
+            {: RESULT = new WebSite(id.toString(), userCreator.toString(), crdDate.toString(), mdfyDate., mdfyUsr).builder();:}
            ;
 
 deleteSite::= BORRAR_SITIO_WEB COMILLAS MAYORQUE
+            INITPARAMETROS
             id
+            ENDPARAMETROS
             ENDACCION
             ;
 
@@ -87,8 +91,8 @@ newPage::=  NUEVA_PAGINA COMILLAS MAYORQUE
             prePrincipal
             userCreator
             creationDate
-            modificationUser
             modificationDate
+            modificationUser
             ENDPARAMETROS
             ENDACCION
             ;
@@ -114,15 +118,17 @@ addComponent::= AGREGAR_COMPONENTE COMILLAS MAYORQUE
                 pageComponent
                 classComponent
                 ENDPARAMETROS
-                INITATRIBUT
+                INITATRIBUTOS
                 atribut
-                endAtributs
+                ENDATRIBUTOS
                 ENDACCION
                 ;
 
 deleteComponent::= BORRAR_COMPONENTE COMILLAS MAYORQUE
+                INITPARAMETROS
                 id
                 pageComponent
+                ENDPARAMETROS
                 ENDACCION
                 ;
 
@@ -139,46 +145,71 @@ modifyComponent::= MODIFICAR_COMPONENTE COMILLAS MAYORQUE
                 ;
 
 id::= initParametro ID COMILLAS MAYORQUE
-        CORCHETEA  CORCHETEC
+        CORCHETEA
+        IDENTIFICADOR:id
+        CORCHETEC
         ENDPARAMETRO
+        {:RESULT = id.toString();:}
         ;
 
 userCreator::= initParametro USUARIO_CREACION COMILLAS MAYORQUE
-            CORCHETEA CORCHETEC
+            CORCHETEA
+            IDENTIFICADOR:userCreator
+            CORCHETEC
             ENDPARAMETRO
+            {:RESULT = userCreator.toString();:}
             ;
 
 creationDate::= initParametro FECHA_CREACION COMILLAS MAYORQUE
-                CORCHETEA CORCHETEC
+                CORCHETEA
+                IDENTIFICADOR:creationDate
+                CORCHETEC
                 ENDPARAMETRO
+                {:RESULT = creationDate.toString();:}
                 ;
 
 modificationDate::= initParametro FECHA_MODIFICACION COMILLAS MAYORQUE
-                CORCHETEA CORCHETEC
+                CORCHETEA
+                IDENTIFICADOR:modificationDate
+                CORCHETEC
                 ENDPARAMETRO
+                {:RESULT = modificationDate.toString();:}
                 ;
 
 modificationUser::= initParametro USUARIO_MODIFICACION COMILLAS MAYORQUE
-                CORCHETEA CORCHETEC
+                CORCHETEA
+                IDENTIFICADOR:modificationUser
+                CORCHETEC
                 ENDPARAMETRO
+                {:RESULT = modificationUser.toString();:}
                 ;
 
 title::= initParametro TITULO COMILLAS MAYORQUE
-        CORCHETEA CORCHETEC
+        CORCHETEA
+        IDENTIFICADOR:title
+        CORCHETEC
         ENDPARAMETRO
+        {:RESULT = title.toString();:}
         ;
 
 site::= initParametro SITIO COMILLAS MAYORQUE
-        CORCHETEA CORCHETEC
+        CORCHETEA
+        IDENTIFICADOR:site
+        CORCHETEC
         ENDPARAMETRO
+        {:RESULT = site.toString();:}
         ;
 
-prePrincipal::= principal
+prePrincipal::= principal:principal
+            {:RESULT = principal.toString();:}
             ;
 
 principal::= initParametro PADRE COMILLAS MAYORQUE
-            CORCHETEA CORCHETEC
+            CORCHETEA
+            IDENTIFICADOR: principal
+            CORCHETEC
             ENDPARAMETRO
+            {:RESULT = principal.toString();:}
             ;
 
 initParameters::= INITPARAMETROS
@@ -188,75 +219,81 @@ endParameters::= MENORQUE DIAGONAL PARAMETROS MAYORQUE
                 ;
 
 pageComponent::= initParametro PAGINA COMILLAS MAYORQUE
-                CORCHETEA CORCHETEC
+                CORCHETEA
+                IDENTIFICADOR:pageComponent
+                CORCHETEC
                 ENDPARAMETRO
+                {:RESULT = pageComponent.toString();:}
                 ;
 
 classComponent::= initParametro CLASE COMILLAS MAYORQUE
-                CORCHETEA atributClass CORCHETEC
+                CORCHETEA
+                atributClass
+                CORCHETEC
                 ENDPARAMETRO
                 ;
 
-atribut::=  MENORQUE ATRIBUTO NOMBRE IGUAL COMILLAS atributClass COMILLAS MAYORQUE
-            CORCHETEA atributExtend CORCHETEC
-            ENDATRIBUT
+atribut::=  atributExtend atribut
+            |
             ;
 
 
-atributExtend::= textAttribut
-        | lineupAttribut
-        | colorAttribut
-        | originAttribut
-        | heightAttribut
-        | wideAttribut
-        | principalAttribut
-        | labelAttribut
+atributExtend::= initAttribut textAttribut
+        |  initAttribut lineupAttribut
+        |  initAttribut colorAttribut
+        |  initAttribut originAttribut
+        |  initAttribut heightAttribut
+        |  initAttribut wideAttribut
+        |  initAttribut principalAttribut
+        |  initAttribut labelAttribut
         ;
 
-atributClass::= TITULO
-                | PARRAFO
-                | IMAGEN
+atributClass::= TITULO : titulo {:RESULT = titulo.toString();:}
+                | PARRAFO : parrafo
+                | IMAGEN : imagen
+
                 | VIDEO
                 | MENU
+
                 ;
 
-textAttribut::= MENORQUE ATRIBUTO NOMBRE IGUAL COMILLAS TEXTO COMILLAS MAYORQUE
-               CORCHETEA CORCHETEC
+textAttribut::= TEXTO COMILLAS MAYORQUE
+               CORCHETEA IDENTIFICADOR CORCHETEC
                ENDATRIBUT
                ;
 
-lineupAttribut::= MENORQUE ATRIBUTO NOMBRE IGUAL COMILLAS ALINEACION COMILLAS MAYORQUE
-                  CORCHETEA CORCHETEC
+lineupAttribut::=  ALINEACION COMILLAS MAYORQUE
+                  CORCHETEA IDENTIFICADOR CORCHETEC
                   ENDATRIBUT
                   ;
 
-colorAttribut::= MENORQUE ATRIBUTO NOMBRE IGUAL COMILLAS COLOR COMILLAS MAYORQUE
-                 CORCHETEA CORCHETEC
+colorAttribut::=  COLOR COMILLAS MAYORQUE
+                 CORCHETEA HEXADECIMAL CORCHETEC
                  ENDATRIBUT
                  ;
 
-originAttribut::= MENORQUE ATRIBUTO NOMBRE IGUAL COMILLAS ORIGEN COMILLAS MAYORQUE
-                 CORCHETEA CORCHETEC
+originAttribut::=  ORIGEN COMILLAS MAYORQUE
+                 CORCHETEA IDENTIFICADOR CORCHETEC
                  ENDATRIBUT
                  ;
 
-heightAttribut::= MENORQUE ATRIBUTO NOMBRE IGUAL COMILLAS ALTURA COMILLAS MAYORQUE
-                 CORCHETEA CORCHETEC
+heightAttribut::=  ALTURA COMILLAS MAYORQUE
+                 CORCHETEA IDENTIFICADOR CORCHETEC
                  ENDATRIBUT
                  ;
 
-wideAttribut::= MENORQUE ATRIBUTO NOMBRE IGUAL COMILLAS ANCHO COMILLAS MAYORQUE
-                CORCHETEA CORCHETEC
+wideAttribut::=  ANCHO COMILLAS MAYORQUE
+                CORCHETEA IDENTIFICADOR CORCHETEC
                 ENDATRIBUT
                 ;
 
-principalAttribut::= MENORQUE ATRIBUTO NOMBRE IGUAL COMILLAS PADRE COMILLAS MAYORQUE
-                CORCHETEA CORCHETEC
+principalAttribut::=  PADRE COMILLAS MAYORQUE
+                CORCHETEA IDENTIFICADOR CORCHETEC
                 ENDATRIBUT
                 ;
 
-labelAttribut::= MENORQUE ATRIBUTO NOMBRE IGUAL COMILLAS ETIQUETAS COMILLAS MAYORQUE
-                CORCHETEA CORCHETEC
+labelAttribut::= ETIQUETAS COMILLAS MAYORQUE
+                CORCHETEA IDENTIFICADOR CORCHETEC
                 ENDATRIBUT
                 ;
 
@@ -265,4 +302,7 @@ initAcction::= INITACCION NOMBRE IGUAL COMILLAS
             ;
 
 initParametro::= INITPARAMETRO NOMBRE IGUAL COMILLAS
+            ;
+
+initAttribut::= INITATRIBUT NOMBRE IGUAL COMILLAS
             ;

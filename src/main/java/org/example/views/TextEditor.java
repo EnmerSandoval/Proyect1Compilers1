@@ -194,7 +194,7 @@ public class TextEditor extends javax.swing.JFrame {
 
     private void sendTextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendTextButtonActionPerformed
         // TODO add your handling code here:
-        /*String IP = "127.0.0.1";
+       /* String IP = "127.0.0.1";
         int port = 8080;
         try {
             Socket socket = new Socket(IP, port);
@@ -204,7 +204,7 @@ public class TextEditor extends javax.swing.JFrame {
             socket.close();
         } catch (Exception e) {
             e.printStackTrace();
-        }*/
+        } */
         try {
             StringReader sr = new StringReader(textEditorArea.getText());
             Lexer lex = new Lexer(new StringReader(textEditorArea.getText()));

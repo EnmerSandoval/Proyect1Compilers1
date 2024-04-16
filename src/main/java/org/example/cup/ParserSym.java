@@ -25,6 +25,7 @@ public class ParserSym {
   public static final int ETIQUETAS = 41;
   public static final int VIDEO = 33;
   public static final int MENU = 34;
+  public static final int IDENTIFICADOR = 55;
   public static final int MAYORQUE = 25;
   public static final int IGUAL = 23;
   public static final int ENDACCION = 45;
@@ -54,6 +55,7 @@ public class ParserSym {
   public static final int PARRAFO = 31;
   public static final int MODIFICAR_COMPONENTE = 15;
   public static final int AGREGAR_COMPONENTE = 18;
+  public static final int HEXADECIMAL = 54;
   public static final int PARAMETRO = 20;
   public static final int SITIO = 11;
   public static final int TEXTO = 35;
@@ -116,7 +118,9 @@ public class ParserSym {
   "INITPARAMETROS",
   "ENDPARAMETROS",
   "INITATRIBUTOS",
-  "ENDATRIBUTOS"
+  "ENDATRIBUTOS",
+  "HEXADECIMAL",
+  "IDENTIFICADOR"
   };
 }
 

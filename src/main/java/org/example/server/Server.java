@@ -23,7 +23,7 @@ public class Server implements Runnable{
             System.out.println("El mensaje es: " + mensajeRecibido);
             serverSocket.accept().close();
         }catch (Exception e){
-
+            e.printStackTrace();
         }
     }
 }
