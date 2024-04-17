@@ -1,16 +1,9 @@
 package org.example.classes;
 
-
-import lombok.*;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 public class WebSite {
     private String id;
     private String userCreator;
@@ -18,9 +11,24 @@ public class WebSite {
     private String modificationDate;
     private String userModification;
 
+    public WebSite(String id, String userCreator, String creationDate, String modificationDate, String userModification) {
+        this.id = id;
+        this.userCreator = userCreator;
+        this.creationDate = creationDate;
+        this.modificationDate = modificationDate;
+        this.userModification = userModification;
+    }
+
+    public WebSite(String id) {
+        this.id = id;
+    }
+
+
+
     public boolean createNewSite(){
         String directory = "src/main/java/org/example/sites/" + this.getId();
-        if(createDirectory(directory)){
+        String directoryXML = "src/main/java/org/example/sites/" + this.getId() + "/xmlFiles";
+        if(createDirectory(directory) && createDirectory(directoryXML)){
             createIndex(directory);
             return true;
         }
@@ -54,5 +62,45 @@ public class WebSite {
             return file.mkdirs();
         }
         return false;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getUserCreator() {
+        return userCreator;
+    }
+
+    public void setUserCreator(String userCreator) {
+        this.userCreator = userCreator;
+    }
+
+    public String getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(String creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public String getModificationDate() {
+        return modificationDate;
+    }
+
+    public void setModificationDate(String modificationDate) {
+        this.modificationDate = modificationDate;
+    }
+
+    public String getUserModification() {
+        return userModification;
+    }
+
+    public void setUserModification(String userModification) {
+        this.userModification = userModification;
     }
 }
