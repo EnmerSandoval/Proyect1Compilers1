@@ -1,12 +1,12 @@
 package org.example.classes.components;
 
-public class ImagenComponent extends Component{
+public class ImageComponent extends Component{
 
     private String origin;
     private String lineUp;
     private String height;
     private String wide;
-    public ImagenComponent(String idComponent, String page, String classComponent, String origin, String lineUp, String height, String wide) {
+    public ImageComponent(String idComponent, String page, String classComponent, String origin, String lineUp, String height, String wide) {
         super(idComponent, page, classComponent);
         this.origin = origin;
         this.lineUp = lineUp;
@@ -14,7 +14,7 @@ public class ImagenComponent extends Component{
         this.wide = wide;
     }
 
-    public ImagenComponent(String origin, String lineUp, String height, String wide){
+    public ImageComponent(String origin, String lineUp, String height, String wide){
         super();
         this.origin = origin;
         this.lineUp = lineUp;

@@ -15,11 +15,8 @@ import org.example.cup.*;
 %column
 %cup
 
-digit = [0-9]+
-letter = [a-zA-Z]
 lineTerminator = \r|\n|\r|n
 spaceWhite = [  |\t|\f ] | {lineTerminator}
-word = {letter}({letter} | {digit})+
 comillas = "\""
 COLOR_HEX = "#"([0-9a-fA-F]{6})
 IDENTIFICADOR = [^\[\n\r]*;
@@ -52,12 +49,10 @@ IDENTIFICADOR = [^\[\n\r]*;
 "CLASE"                 {return new Symbol(ParserSym.CLASE, yycolumn, yyline, yytext());}
 "AGREGAR_COMPONENTE"    {return new Symbol(ParserSym.AGREGAR_COMPONENTE, yycolumn, yyline, yytext());}
 "BORRAR_COMPONENTE"     {return new Symbol(ParserSym.BORRAR_COMPONENTE, yycolumn, yyline, yytext());}
-"PARAMETRO"             {return new Symbol(ParserSym.PARAMETRO, yycolumn, yyline, yytext());}
-"PARAMETROS"            {return new Symbol(ParserSym.PARAMETROS, yycolumn, yyline, yytext());}
 "TEXTO"                 {return new Symbol(ParserSym.TEXTO, yycolumn, yyline, yytext());}
 "COLOR"                 {return new Symbol(ParserSym.COLOR, yycolumn, yyline, yytext());}
 "nombre"                {return new Symbol(ParserSym.NOMBRE, yycolumn, yyline, yytext());}
-"valor"                 {return new Symbol(ParserSym.VALOR, yycolumn, yyline, yytext());}
+//"valor"                 {return new Symbol(ParserSym.VALOR, yycolumn, yyline, yytext());}
 
 //Labels reserved
 "<atributo"             {return new Symbol(ParserSym.INITATRIBUT, yycolumn, yyline, yytext());}
@@ -72,10 +67,10 @@ IDENTIFICADOR = [^\[\n\r]*;
 "</parametro>"          {return new Symbol(ParserSym.ENDPARAMETRO, yycolumn, yyline, yytext());}
 "<parametros>"          {return new Symbol(ParserSym.INITPARAMETROS, yycolumn, yyline, yytext());}
 "</parametros>"         {return new Symbol(ParserSym.ENDPARAMETROS, yycolumn, yyline, yytext());}
-"<etiqueta"             {return new Symbol(ParserSym.INITETIQUETA, yycolumn, yyline, yytext());}
-"</etiqueta>"           {return new Symbol(ParserSym.ENDETIQUETA, yycolumn, yyline, yytext());}
-"<etiquetas>"           {return new Symbol(ParserSym.INITETIQUETAS, yycolumn, yyline, yytext());}
-"</etiquetas>"          {return new Symbol(ParserSym.ENDETIQUETAS, yycolumn, yyline, yytext());}
+//"<etiqueta"             {return new Symbol(ParserSym.INITETIQUETA, yycolumn, yyline, yytext());}
+//"</etiqueta>"           {return new Symbol(ParserSym.ENDETIQUETA, yycolumn, yyline, yytext());}
+//"<etiquetas>"           {return new Symbol(ParserSym.INITETIQUETAS, yycolumn, yyline, yytext());}
+//"</etiquetas>"          {return new Symbol(ParserSym.ENDETIQUETAS, yycolumn, yyline, yytext());}
 
 //Signs reserved
 "="                     {return new Symbol(ParserSym.IGUAL, yycolumn, yyline, yytext());}

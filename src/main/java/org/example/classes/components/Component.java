@@ -49,10 +49,39 @@ public class Component {
 
     }
 
+    public Component(String idComponent, String classComponent) {
+        this.idComponent = idComponent;
+        this.classComponent = classComponent;
+    }
+
     public Component(String idComponent) {
         this.idComponent = idComponent;
     }
 
     public Component() {
+    }
+
+    public String getIdComponent() {
+        return idComponent;
+    }
+
+    public void setIdComponent(String idComponent) {
+        this.idComponent = idComponent;
+    }
+
+    public String getPage() {
+        return page;
+    }
+
+    public void setPage(String page) {
+        this.page = page;
+    }
+
+    public String getClassComponent() {
+        return classComponent;
+    }
+
+    public void setClassComponent(String classComponent) {
+        this.classComponent = classComponent;
     }
 }

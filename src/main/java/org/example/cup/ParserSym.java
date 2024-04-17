@@ -41,6 +41,7 @@ public class ParserSym {
   public static final int FECHA_MODIFICACION = 6;
   public static final int BORRAR_SITIO_WEB = 8;
   public static final int COLOR = 32;
+  public static final int MENORQUE = 51;
   public static final int ENDATRIBUT = 44;
   public static final int USUARIO_MODIFICACION = 7;
   public static final int FECHA_CREACION = 5;
@@ -110,7 +111,8 @@ public class ParserSym {
   "INITATRIBUTOS",
   "ENDATRIBUTOS",
   "HEXADECIMAL",
-  "IDENTIFICADOR"
+  "IDENTIFICADOR",
+  "MENORQUE"
   };
 }
 

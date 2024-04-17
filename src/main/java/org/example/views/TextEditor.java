@@ -1,7 +1,5 @@
 package org.example.views;
 
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -10,12 +8,11 @@ import java.io.StringReader;
 import java.net.Socket;
 import javax.swing.JFileChooser;
 import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import org.example.cup.Parser;
-import org.example.cup.ParserSym;
-import org.example.lexer.Lexer;
+import javax.swing.text.Element;
 
 /**
  * @author enmer
@@ -42,8 +39,6 @@ public class TextEditor extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        textEditorArea = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
         textAreaConsole = new javax.swing.JTextArea();
         labelTextEditorArea = new javax.swing.JLabel();
@@ -52,6 +47,8 @@ public class TextEditor extends javax.swing.JFrame {
         txtColumn = new javax.swing.JLabel();
         sendTextButton = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        textEditorArea = new javax.swing.JTextPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         files = new javax.swing.JMenu();
         openFileItem = new javax.swing.JMenuItem();
@@ -59,31 +56,6 @@ public class TextEditor extends javax.swing.JFrame {
         editItem = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        textEditorArea.setColumns(20);
-        textEditorArea.setRows(5);
-        jScrollPane1.setViewportView(textEditorArea);
-        /*textEditorArea.addCaretListener(new CaretListener){
-            @Override
-            public void caretUpdate(CaretEvent e){
-                JTextArea source = (JTextArea) e.getSource();
-                int caretPosition = source.getCaretPosition();
-                int line = 1;
-                int column = 1;
-
-                try {
-                    int start = source.getLineStartOffset(source.getLineOfOffset(caretPosition));
-                    line = source.getLineOfOffset(caretPosition) + 1;
-                    column = caretPosition - start + 1;
-                } catch (Exception ex){
-                    ex.printStackTrace();
-                }
-
-                txtLine.setText("Line: " + line);
-                txtColumn.setText("Column: " + column);
-            }
-        };
-        */
 
         textAreaConsole.setColumns(20);
         textAreaConsole.setRows(5);
@@ -108,26 +80,43 @@ public class TextEditor extends javax.swing.JFrame {
 
         jButton1.setText("Excecute Comand");
 
+        jScrollPane3.setViewportView(textEditorArea);
+        textEditorArea.addCaretListener(new CaretListener() {
+            @Override
+            public void caretUpdate(CaretEvent e) {
+                textEditorArea.setEditable(true);
+                JTextPane source = (JTextPane) e.getSource();
+                int caretPosition = source.getCaretPosition();
+                Element root = source.getDocument().getDefaultRootElement();
+                int conteoFila = root.getElementIndex(caretPosition) + 1;
+                int conteoColumna = caretPosition - root.getElement(conteoFila - 1).getStartOffset() + 1;
+                txtLine.setText("Line: " + (conteoFila - 1));
+                txtColumn.setText("Column: " + (conteoColumna - 1));
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelTextEditorArea, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelConsole, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 902, Short.MAX_VALUE)
-                            .addComponent(jScrollPane2))
-                        .addGap(18, 18, 18)
+                        .addContainerGap()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelConsole, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelTextEditorArea, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 902, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtColumn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txtLine, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(sendTextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(93, Short.MAX_VALUE))
+                .addGap(111, 111, 111))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -135,22 +124,24 @@ public class TextEditor extends javax.swing.JFrame {
                 .addGap(7, 7, 7)
                 .addComponent(labelTextEditorArea, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(txtLine)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(12, 12, 12)
                         .addComponent(txtColumn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(sendTextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(104, 104, 104))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(12, 12, 12)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(362, 362, 362)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 418, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addComponent(labelConsole, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
                 .addGap(18, 18, 18))
         );
 
@@ -228,6 +219,7 @@ public class TextEditor extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         } */
+/* 
         try {
             StringReader sr = new StringReader(textEditorArea.getText());
             Lexer lex = new Lexer(new StringReader(textEditorArea.getText()));
@@ -238,6 +230,7 @@ public class TextEditor extends javax.swing.JFrame {
             System.out.println("----> " + e.getMessage());
             e.printStackTrace();
         }
+       */       
 
     }//GEN-LAST:event_sendTextButtonActionPerformed
 
@@ -282,15 +275,15 @@ public class TextEditor extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel labelConsole;
     private javax.swing.JLabel labelTextEditorArea;
     private javax.swing.JMenuItem openFileItem;
     private javax.swing.JMenuItem runItem;
     private javax.swing.JButton sendTextButton;
     private javax.swing.JTextArea textAreaConsole;
-    private javax.swing.JTextArea textEditorArea;
+    private javax.swing.JTextPane textEditorArea;
     private javax.swing.JLabel txtColumn;
     private javax.swing.JLabel txtLine;
     // End of variables declaration//GEN-END:variables
