@@ -37,9 +37,11 @@ public class Server implements Runnable{
     public void run() {
         try{
             ServerSocket serverSocket = new ServerSocket(8080);
+            while(true){
             DataInputStream dataInputStream = new DataInputStream(serverSocket.accept().getInputStream());
             String mensajeRecibido = dataInputStream.readUTF();
             runParser(mensajeRecibido);
+            }
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -70,7 +72,7 @@ public class Server implements Runnable{
                     if(pages.get(i).getFlag() == 1){
                         xmlWriter.createPage(pages.get(i));
                     } else if(pages.get(i).getFlag() == 2){
-
+                        modifyTitle(pages.get(i));
                     } else  if(pages.get(i).getFlag() ==3){
                         deleteFilesWithId(pages.get(i).getId());
                     }
@@ -81,6 +83,8 @@ public class Server implements Runnable{
                 for (int i = 0; i < components.size() ; i++) {
                     if (components.get(i).getFlag() == 4){
                         readXmlExist(components.get(i));
+                    } else if(components.get(i).getFlag() == 7){
+                        modifyComponente(components.get(i));
                     }
                 }
             }
@@ -112,8 +116,6 @@ public class Server implements Runnable{
         }
         page.setComponents(componentPage);
     }
-
-
 
 
     public void readXmlExist(Component component){
@@ -200,4 +202,69 @@ public class Server implements Runnable{
         }
         return false;
     }
+
+    public void modifyComponente(Component component){
+        if (component.getFlag() == 7){
+            try {
+                File fileDirectory = new File(PATH);
+                String xmlRead = convertXmlToString(xmlWriter.searchForXmlInDirectory(fileDirectory, component.getPage()));
+
+                Lexer lex = new Lexer(new StringReader(xmlRead));
+                Parser sintax2 = new Parser(lex);
+                sintax2.parse();
+                ArrayList<Component> componentsRead = sintax2.getComponents();
+                ArrayList<Page> pageRead = sintax2.getPages();
+
+                for (int i = 0; i < pageRead.size(); i++) {
+                    verificationComponents(pageRead.get(i), componentsRead);
+                }
+
+                for (int i = 0; i < pageRead.size(); i++) {
+                    if(pageRead.get(i).getComponents().get(i).getIdComponent().equals(component.getIdComponent())){
+                        pageRead.get(i).getComponents().remove(i);
+                        pageRead.get(i).getComponents().add(component);
+                    }
+                }
+
+                for (int i = 0; i < pageRead.size(); i++) {
+                    xmlWriter.createPage(pageRead.get(i));
+
+                }
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void modifyTitle(Page page){
+        try {
+            File fileDirectory = new File(PATH);
+            String xmlRead = convertXmlToString(xmlWriter.searchForXmlInDirectory(fileDirectory, page.getId()));
+
+            Lexer lex = new Lexer(new StringReader(xmlRead));
+            Parser sintax2 = new Parser(lex);
+            sintax2.parse();
+            ArrayList<Component> componentsRead = sintax2.getComponents();
+            ArrayList<Page> pageRead = sintax2.getPages();
+
+            for (int i = 0; i < pageRead.size(); i++) {
+                verificationComponents(pageRead.get(i), componentsRead);
+            }
+
+            for (int i = 0; i < pageRead.size(); i++) {
+                if(pageRead.get(i).getId().equals(page.getId())){
+                    pageRead.get(i).setTitle(page.getTitle());
+                }
+            }
+
+            for (int i = 0; i < pageRead.size(); i++) {
+                xmlWriter.createPage(pageRead.get(i));
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
 }

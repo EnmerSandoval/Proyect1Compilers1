@@ -111,7 +111,7 @@ actionSingle::= initAcction siteWeb:siteWeb {:ClassPrincipal classPrincipal = ne
             classPrincipal.setPages(pages); RESULT = classPrincipal;:}
         | initAcction component:component {:ClassPrincipal classPrincipal = new ClassPrincipal();
             classPrincipal.setComponents(components); RESULT = classPrincipal;:}
-      //  | error
+        | error
         ;
 
 siteWeb::= addNewSite:addNewSite {:webSites.add(addNewSite);
