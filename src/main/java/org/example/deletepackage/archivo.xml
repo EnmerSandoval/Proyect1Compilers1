@@ -1,0 +1,298 @@
+```
+<accion nombre="NUEVA_PAGINA">
+    <parametros>
+        <parametro nombre="ID">
+            [hola]
+        </parametro>
+        <parametro nombre="TITULO">
+            [El titulo de la]
+        </parametro>
+        <parametro nombre="SITIO">
+            [El identificador del sitio web ]
+        </parametro>
+        <parametro nombre="PADRE">
+            [identificador de la pagina padre]
+        </parametro>
+        <parametro nombre="USUARIO_CREACION">
+            [ID del usuario que ejecuto la accion]
+        </parametro>
+        <parametro nombre="FECHA_CREACION">
+            [4444-02-16]
+        </parametro>
+        <parametro nombre="USUARIO_MODIFICACION">
+            [id del ultimo usuario que realizo modificaciones a pagina]
+        </parametro>
+        <parametro nombre="FECHA_MODIFICACION">
+            [1444-54-66]
+        </parametro>
+    </parametros>
+</accion>
+
+<accion nombre="BORRAR_PAGINA">
+<parametros>
+    <parametro nombre="ID">
+        [PAGINA A ELIMINAR]
+    </parametro>
+</parametros>
+</accion>
+
+<accion nombre="NUEVA_PAGINA">
+<parametros>
+    <parametro nombre="ID">
+        [el identificador de la página]
+    </parametro>
+    <parametro nombre="TITULO">
+        [El titulo de la pagina mostrado en el navegador web, puede contener cualquier.]
+    </parametro>
+    <parametro nombre="SITIO">
+        [El identificador del sitio web de la página]
+    </parametro>
+    <parametro nombre="PADRE">
+        [identificador de la pagina padre]
+    </parametro>
+    <parametro nombre="USUARIO_CREACION">
+        [ID del usuario que ejecuto la accion]
+    </parametro>
+    <parametro nombre="FECHA_CREACION">
+        "1010-22-11"
+    </parametro>
+    <parametro nombre="USUARIO_MODIFICACION">
+        [id del ultimo usuario que realizo modificaciones a pagina]
+    </parametro>
+    <parametro nombre="FECHA_MODIFICACION">
+        "1010-22-22"
+    </parametro>
+</parametros>
+<etiquetas>
+    <etiqueta valor="etiqueta1"/>
+    <etiqueta valor="etiqueta2"/>
+</etiquetas>
+</accion>
+<accion nombre="BORRAR_PAGINA">
+<parametros>
+    <parametro nombre="ID">
+        [**PAGINA A ELIMINAR**]
+    </parametro>
+</parametros>
+</accion>
+
+<accion nombre="MODIFICAR_PAGINA">
+<parametros>
+    <parametro nombre="ID">
+        [PAGINA A MODIFICAR]
+    </parametro>
+    <parametro nombre="TITULO">
+        [NUEVO TITULO]
+    </parametro>
+</parametros>
+<etiquetas>
+    <etiqueta valor="nueva_etiqueta1"/>
+    <etiqueta valor="nueva_etiqueta2"/>
+</etiquetas>
+</accion>
+
+<accion nombre="AGREGAR_COMPONENTE">
+<parametros>
+    <parametro nombre="ID">
+        [identificador del componente]
+    </parametro>
+    <parametro nombre="PAGINA">
+        [PaginaUnoA]
+    </parametro>
+    <parametro nombre="CLASE">
+        TITULO
+    </parametro>
+</parametros>
+<atributos>
+    <atributo nombre="TEXTO">
+        [valor de texto]
+    </atributo>
+    <atributo nombre="ALINEACION">
+        [CENTRAR]
+    </atributo>
+    <atributo nombre="COLOR">
+        [#FFFFFF]
+    </atributo>
+</atributos>
+</accion>
+<accion nombre="AGREGAR_COMPONENTE">
+<parametros>
+    <parametro nombre="ID">
+        [identificador]
+    </parametro>
+    <parametro nombre="PAGINA">
+        [PageSitioUno]
+    </parametro>
+    <parametro nombre="CLASE">
+        [TITULO]
+    </parametro>
+</parametros>
+<atributos>
+    <atributo nombre="TEXTO">
+        [valor de texto]
+    </atributo>
+    <atributo nombre="ALINEACION">
+        [CENTRAR]
+    </atributo>
+    <atributo nombre="COLOR">
+        [#FFFFFF]
+    </atributo>
+</atributos>
+</accion>
+
+<acciones>
+<accion nombre="NUEVO_SITIO_WEB">
+    <parametros>
+        <parametro nombre="ID">
+            [SitioUNO]
+        </parametro>
+        <parametro nombre="USUARIO_CREACION">
+            [l ID del usuario que ejecutó la acción]
+        </parametro>
+        <parametro nombre="FECHA_CREACION">
+            [2000-10-16]
+        </parametro>
+        <parametro nombre="FECHA_MODIFICACION">
+            [2023-12-23]
+        </parametro>
+        <parametro nombre="USUARIO_MODIFICACION">
+            [Id del ultimo usuario que realizó modificaciones en el sitio.]
+        </parametro>
+    </parametros>
+</accion>
+<accion nombre="NUEVA_PAGINA">
+    <parametros>
+        <parametro nombre="ID">
+            [PaginaUno-SitioUno]
+        </parametro>
+        <parametro nombre="TITULO">
+            [El titulo de la pagina mostrado en el navegador web, puede contener cualquier.]
+        </parametro>
+        <parametro nombre="SITIO">
+            [SitioUNO]
+        </parametro>
+        <parametro nombre="PADRE">
+            [pagina padre]
+        </parametro>
+        <parametro nombre="USUARIO_CREACION">
+            [ID del usuario que ejecuto la accion]
+        </parametro>
+        <parametro nombre="FECHA_CREACION">
+            [1010-22-11]
+        </parametro>
+        <parametro nombre="USUARIO_MODIFICACION">
+            [id del ultimo usuario que realizo modificaciones a pagina]
+        </parametro>
+        <parametro nombre="FECHA_MODIFICACION">
+            [1010-22-22]
+        </parametro>
+    </parametros>
+    <etiquetas>
+        <etiqueta valor="etiqueta1"/>
+        <etiqueta valor="etiqueta2"/>
+    </etiquetas>
+</accion>
+</acciones>
+<acciones>
+<accion nombre="NUEVO_SITIO_WEB">
+    <parametros>
+        <parametro nombre="ID">
+            [SitioUNO]
+        </parametro>
+        <parametro nombre="USUARIO_CREACION">
+            [l ID del usuario que ejecutó la acción]
+        </parametro>
+        <parametro nombre="FECHA_CREACION">
+            [2000-10-16]
+        </parametro>
+        <parametro nombre="FECHA_MODIFICACION">
+            [2023-12-23]
+        </parametro>
+        <parametro nombre="USUARIO_MODIFICACION">
+            [Id del ultimo usuario que realizó modificaciones en el sitio.]
+        </parametro>
+    </parametros>
+</accion>
+<accion nombre="NUEVA_PAGINA">
+    <parametros>
+        <parametro nombre="ID">
+            [PaginaUnoA]
+        </parametro>
+        <parametro nombre="TITULO">
+            [El titulo de la pagina mostrado en el navegador web, puede contener cualquier.]
+        </parametro>
+        <parametro nombre="SITIO">
+            [SitioUNO]
+        </parametro>
+        <parametro nombre="PADRE">
+            [pagina padre]
+        </parametro>
+        <parametro nombre="USUARIO_CREACION">
+            [ID del usuario que ejecuto la accion]
+        </parametro>
+        <parametro nombre="FECHA_CREACION">
+            [1010-22-11]
+        </parametro>
+        <parametro nombre="USUARIO_MODIFICACION">
+            [id del ultimo usuario que realizo modificaciones a pagina]
+        </parametro>
+        <parametro nombre="FECHA_MODIFICACION">
+            [1010-22-22]
+        </parametro>
+    </parametros>
+    <etiquetas>
+        <etiqueta valor="etiqueta1"/>
+        <etiqueta valor="etiqueta2"/>
+    </etiquetas>
+</accion>
+</acciones>
+
+<accion nombre="BORRAR_PAGINA">
+<parametros>
+    <parametro nombre="ID">
+        [PaginaUnoA]
+    </parametro>
+</parametros>
+</accion>
+<accion nombre="MODIFICAR_PAGINA">
+<parametros>
+    <parametro nombre="ID">
+        [holaPage]
+    </parametro>
+    <parametro nombre="TITULO">
+        [NUEVO TITULO 2]
+    </parametro>
+</parametros>
+<etiquetas>
+    <etiqueta valor="nueva_etiqueta1"/>
+    <etiqueta valor="nueva_etiqueta2"/>
+</etiquetas>
+</accion>
+
+<accion nombre="MODIFICAR_COMPONENTE">
+<parametros>
+    <parametro nombre="ID">
+        [itexto1r]
+    </parametro>
+    <parametro nombre="PAGINA">
+        [PaginaUnoA]
+    </parametro>
+    <parametro nombre="CLASE">
+        IMAGEN
+    </parametro>
+</parametros>
+<atributos>
+    <atributo nombre="ORIGEN">
+        [https://th.bing.com/th/id/OIP.ZWjP9tNAnMj5tiXvJcIwKQHaJW?rs=1&pid=ImgDetMain]
+    </atributo>
+    <atributo nombre="ALINEACION">
+        [CENTRAR]
+    </atributo>
+    <atributo nombre="ALTURA">
+        500
+    </atributo>
+    <atributo nombre="ANCHO">
+        400
+    </atributo>
+</atributo
+        ```

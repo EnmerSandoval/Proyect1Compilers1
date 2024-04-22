@@ -1,0 +1,76 @@
+<acciones><accion nombre="NUEVA_PAGINA">
+<parametros>
+<parametro nombre="ID">
+[pagina1]
+</parametro>
+<parametro nombre="TITULO">
+[titulo1]
+</parametro>
+<parametro nombre="SITIO">
+[web1]
+</parametro>
+<parametro nombre="PADRE">
+[indexweb1]
+</parametro>
+<parametro nombre="USUARIO_CREACION">
+[usuario1]
+</parametro>
+<parametro nombre="FECHA_CREACION">
+[[2024-04-14]]
+</parametro>
+<parametro nombre="FECHA_MODIFICACION">
+[2024-04-14]
+</parametro>
+<parametro nombre="USUARIO_MODIFICACION">
+[usuario1]
+</parametro>
+</parametros>
+</accion>
+<accion nombre="AGREGAR_COMPONENTE"><parametros>
+<parametro nombre="ID">
+[componente1]
+</parametro>
+<parametro nombre="PAGINA">
+[pagina1]
+</parametro>
+<parametro nombre="CLASE">
+[IMAGEN]
+</parametro>
+</parametros>
+<atributos>
+<atributo nombre="ORIGEN">
+[https://i.blogs.es/ad7f07/interstellar-ap/1366_2000.jpeg]
+</atributo>
+<atributo nombre="ALINEACION">
+[DERECHA]
+</atributo>
+<atributo nombre="ALTURA">
+[40]
+</atributo>
+<atributo nombre="ANCHO">
+[80]
+</atributo>
+</atributos>
+</accion><accion nombre="AGREGAR_COMPONENTE"><parametros>
+<parametro nombre="ID">
+[componente2]
+</parametro>
+<parametro nombre="PAGINA">
+[pagina1]
+</parametro>
+<parametro nombre="CLASE">
+[TITULO]
+</parametro>
+</parametros>
+<atributos>
+<atributo nombre="TEXTO">
+[titulo que deberia estar abajo de la imagen]
+</atributo>
+<atributo nombre="ALINEACION">
+[CENTRAR]
+</atributo>
+<atributo nombre="COLOR">
+[#2ECC71]
+</atributo>
+</atributos>
+</accion></acciones>

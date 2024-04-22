@@ -4,8 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.example.classes.components.Component;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Page {
@@ -18,8 +20,11 @@ public class Page {
     private String modificationDate;
     private String modificationUser;
 
+    private int flag;
+    private ArrayList<Component> components;
+
     //Constructor principal para poder crear la clase
-    public Page(String id, String title, String site, String parent, String userCreator, String creationDate, String modificationDate, String modificationUser) {
+    public Page(String id, String title, String site, String parent, String userCreator, String creationDate, String modificationDate, String modificationUser, int flag) {
         this.id = id;
         this.title = title;
         this.site = site;
@@ -28,6 +33,7 @@ public class Page {
         this.creationDate = creationDate;
         this.modificationDate = modificationDate;
         this.modificationUser = modificationUser;
+        this.flag = flag;
     }
 
     //Constructor Vacio
@@ -35,16 +41,25 @@ public class Page {
     }
 
     //Constructor para eliminar el sitio web
-    public Page(String id) {
+    public Page(String id, int flag) {
         this.id = id;
+        this.flag = flag;
     }
 
     //Constructor para modificar la pagina
 
-
-    public Page(String id, String title) {
+    public Page(String id, String title, int flag) {
         this.id = id;
         this.title = title;
+        this.flag = flag;
+    }
+
+    public int getFlag() {
+        return flag;
+    }
+
+    public void setFlag(int flag) {
+        this.flag = flag;
     }
 
     //Obtener la fecha por si al usuario se le olvida
@@ -118,5 +133,13 @@ public class Page {
 
     public void setModificationUser(String modificationUser) {
         this.modificationUser = modificationUser;
+    }
+
+    public ArrayList<Component> getComponents() {
+        return components;
+    }
+
+    public void setComponents(ArrayList<Component> components) {
+        this.components = components;
     }
 }

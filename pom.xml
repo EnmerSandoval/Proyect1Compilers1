@@ -16,12 +16,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.26</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>de.jflex</groupId>
             <artifactId>jflex</artifactId>
             <version>1.9.1</version>

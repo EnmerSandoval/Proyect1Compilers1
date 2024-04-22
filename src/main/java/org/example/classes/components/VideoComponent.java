@@ -4,15 +4,15 @@ public class VideoComponent extends Component{
     private String origin;
     private String height;
     private String wide;
-    public VideoComponent(String idComponent, String page, String classComponent, String origin, String height, String wide) {
-        super(idComponent, page, classComponent);
+    public VideoComponent(String idComponent, String page, String classComponent, String origin, String height, String wide, int flag) {
+        super(idComponent, page, classComponent, flag);
         this.origin = origin;
         this.height = height;
         this.wide = wide;
     }
 
-    public VideoComponent(String origin, String height, String wide){
-        super();
+    public VideoComponent(String origin, String height, String wide, int flag){
+        super(flag);
         this.origin = origin;
         this.height = height;
         this.wide = wide;

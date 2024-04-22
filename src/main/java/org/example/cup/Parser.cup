@@ -9,6 +9,7 @@ import org.example.classes.components.Component;
 import org.example.classes.components.ImageComponent;
 import org.example.classes.components.TextComponent;
 import org.example.classes.components.VideoComponent;
+import java.time.LocalDate;
 
 class Parser;
 
@@ -17,6 +18,7 @@ parser code {:
     private ArrayList<WebSite> webSites = new ArrayList<>();
     private ArrayList<Page> pages = new ArrayList<>();
     private ArrayList<Component> components = new ArrayList<>();
+    private LocalDate date = LocalDate.now();
 
     public void syntax_error(Symbol cur_token) {
             System.out.println("Simbolo con error:" + symbl_name_from_id(cur_token.sym));
@@ -27,15 +29,34 @@ parser code {:
             }
     }
 
+    public ArrayList<WebSite> getWebs(){
+        return this.webSites;
+    }
+
+    public ArrayList<Page> getPages(){
+        return this.pages;
+    }
+
+    public ArrayList<Component> getComponents(){
+        return this.components;
+    }
+
+    private String quitarCorchetes(String identificador){
+        return identificador.replace("[", "").replace("]", "");
+    }
+
+    private String quitarEspacios(String space){
+        return space.replace(" ", "");
+    }
 
 :}
 
 terminal NUEVO_SITIO_WEB, ID, USUARIO_CREACION, FECHA_CREACION, FECHA_MODIFICACION, USUARIO_MODIFICACION,
-BORRAR_SITIO_WEB, NUEVA_PAGINA, TITULO, SITIO, PADRE, MODIFICAR_PAGINA, BORRAR_PAGINA, MODIFICAR_COMPONENTE,
-PAGINA, CLASE, AGREGAR_COMPONENTE, BORRAR_COMPONENTE,  NOMBRE, IGUAL, MAYORQUE, COMILLAS, CORCHETEA, CORCHETEC,
+BORRAR_SITIO_WEB, NUEVA_PAGINA, TITULO, TITULOCORCHETES, SITIO, PADRE, MODIFICAR_PAGINA, BORRAR_PAGINA, MODIFICAR_COMPONENTE,
+PAGINA, CLASE, AGREGAR_COMPONENTE, BORRAR_COMPONENTE,  NOMBRE, IGUAL, MAYORQUE, COMILLAS,
 PARRAFO, IMAGEN, VIDEO, MENU, TEXTO, ALINEACION, COLOR, ORIGEN, ALTURA, ANCHO, ETIQUETAS,  INITACCIONES, ENDACCIONES,
 INITACCION, ENDACCION, INITPARAMETRO, ENDPARAMETRO, INITATRIBUT, ENDATRIBUT, INITPARAMETROS, ENDPARAMETROS,
-INITATRIBUTOS, ENDATRIBUTOS, HEXADECIMAL, IDENTIFICADOR, MENORQUE;
+INITATRIBUTOS, ENDATRIBUTOS, IDENTIFICADOR;
 
 //INITETIQUETAS ENNDETIQUETAS INITETIQUETA ENDETIQUETA VALOR
 
@@ -82,14 +103,19 @@ reaction::= reaction actionSingle:actionSingle {:ClassPrincipal classPrincipal =
   Aca se agrega a la lista
 */
 actionSingle::= initAcction siteWeb:siteWeb {:ClassPrincipal classPrincipal = new ClassPrincipal();
-            classPrincipal.setWebSites(webSites); RESULT = classPrincipal;:}
+            classPrincipal.setWebSites(webSites);
+            ArrayList<WebSite> webSites;
+            webSites = classPrincipal.getWebSites();
+            RESULT = classPrincipal;:}
         | initAcction page:page {:ClassPrincipal classPrincipal = new ClassPrincipal();
             classPrincipal.setPages(pages); RESULT = classPrincipal;:}
         | initAcction component:component {:ClassPrincipal classPrincipal = new ClassPrincipal();
             classPrincipal.setComponents(components); RESULT = classPrincipal;:}
+      //  | error
         ;
 
-siteWeb::= addNewSite:addNewSite {:webSites.add(addNewSite); RESULT = addNewSite;:}
+siteWeb::= addNewSite:addNewSite {:webSites.add(addNewSite);
+                                RESULT = addNewSite;:}
         | deleteSite:deleteSite {:webSites.add(deleteSite); RESULT = deleteSite;:}
         ;
 
@@ -113,17 +139,18 @@ addNewSite::= NUEVO_SITIO_WEB COMILLAS MAYORQUE
             modificationUser:modificationUser
             ENDPARAMETROS
             ENDACCION
-            {:WebSite webSite = new WebSite(id.toString(), userCreator.toString(), creationDate.toString(), modificationDate.toString(), modificationUser.toString());
+            {:WebSite webSite = new WebSite(id.toString(), userCreator.toString(), creationDate.toString(), modificationDate.toString(), modificationUser.toString(), false);
             RESULT = webSite;
             :}
            ;
+
 
 deleteSite::= BORRAR_SITIO_WEB COMILLAS MAYORQUE
             INITPARAMETROS
             id:id
             ENDPARAMETROS
             ENDACCION
-            {:WebSite webSite = new WebSite(id); RESULT = webSite;:}
+            {:WebSite webSite = new WebSite(id, true); RESULT = webSite;:}
             ;
 
 newPage::=  NUEVA_PAGINA COMILLAS MAYORQUE
@@ -138,7 +165,7 @@ newPage::=  NUEVA_PAGINA COMILLAS MAYORQUE
             modificationUser:modificationUser
             ENDPARAMETROS
             ENDACCION
-            {:Page page = new Page(id, title, site, prePrincipal, userCreator, creationDate, modificationDate, modificationUser); RESULT = page;:}
+            {:Page page = new Page(id, title, site, prePrincipal, userCreator, creationDate, modificationDate, modificationUser, 1); RESULT = page;:}
             ;
 
 deletePage::=  BORRAR_PAGINA COMILLAS MAYORQUE
@@ -146,7 +173,7 @@ deletePage::=  BORRAR_PAGINA COMILLAS MAYORQUE
                id:id
                ENDPARAMETROS
                ENDACCION
-               {:Page page = new Page(id); RESULT = page;:}
+               {:Page page = new Page(id, 3); RESULT = page;:}
                ;
 
 modifyPage::= MODIFICAR_PAGINA COMILLAS MAYORQUE
@@ -155,7 +182,7 @@ modifyPage::= MODIFICAR_PAGINA COMILLAS MAYORQUE
               title:title
               ENDPARAMETROS
               ENDACCION
-              {:Page page = new Page(id, title); RESULT = page;:}
+              {:Page page = new Page(id, title, 2); RESULT = page;:}
               ;
 
 addComponent::= AGREGAR_COMPONENTE COMILLAS MAYORQUE
@@ -183,7 +210,7 @@ deleteComponent::= BORRAR_COMPONENTE COMILLAS MAYORQUE
                 pageComponent:pageComponent
                 ENDPARAMETROS
                 ENDACCION
-                {:Component component = new Component(id, pageComponent); RESULT = component;:}
+                {:System.out.println("Se hizo delete de componente");Component component = new Component(id, pageComponent, " ", 4); RESULT = component;:}
                 ;
 
 modifyComponent::= MODIFICAR_COMPONENTE COMILLAS MAYORQUE
@@ -200,64 +227,70 @@ modifyComponent::= MODIFICAR_COMPONENTE COMILLAS MAYORQUE
                     atribut.setIdComponent(id);
                     atribut.setPage(pageComponent);
                     atribut.setClassComponent(classComponent);
+                    atribut.setFlag(7);
                     RESULT = atribut;
                 :}
                 ;
 
 id::= initParametro ID COMILLAS MAYORQUE
-        CORCHETEA
         IDENTIFICADOR:id
-        CORCHETEC
         ENDPARAMETRO
-        {:RESULT = id.toString();:}
+        {:RESULT = quitarCorchetes(id.toString());:}
         ;
 
 userCreator::= initParametro USUARIO_CREACION COMILLAS MAYORQUE
-            CORCHETEA
             IDENTIFICADOR:userCreator
-            CORCHETEC
             ENDPARAMETRO
-            {:RESULT = userCreator.toString();:}
+            {:
+            String conditional = quitarCorchetes(quitarEspacios(userCreator.toString()));
+            if(conditional.equals("") ){
+                userCreator = "UsuarioDefault";
+            }RESULT = quitarCorchetes(userCreator.toString());:}
             ;
 
 creationDate::= initParametro FECHA_CREACION COMILLAS MAYORQUE
-                CORCHETEA
                 IDENTIFICADOR:creationDate
-                CORCHETEC
                 ENDPARAMETRO
-                {:RESULT = creationDate.toString();:}
+                {:
+                String conditional = quitarCorchetes(quitarEspacios(creationDate.toString()));
+                if(conditional.equals("")){
+                    creationDate = ""+date;
+                }
+                RESULT = quitarCorchetes(creationDate.toString());:}
                 ;
 
 modificationDate::= initParametro FECHA_MODIFICACION COMILLAS MAYORQUE
-                CORCHETEA
                 IDENTIFICADOR:modificationDate
-                CORCHETEC
                 ENDPARAMETRO
-                {:RESULT = modificationDate.toString();:}
+                {:
+                String conditional = quitarCorchetes(quitarEspacios(modificationDate.toString()));
+                    if(conditional.equals("")){
+                        modificationDate = ""+date;
+                    }
+                RESULT = quitarCorchetes(modificationDate.toString());:}
                 ;
 
 modificationUser::= initParametro USUARIO_MODIFICACION COMILLAS MAYORQUE
-                CORCHETEA
                 IDENTIFICADOR:modificationUser
-                CORCHETEC
                 ENDPARAMETRO
-                {:RESULT = modificationUser.toString();:}
+                {:
+                String conditional = quitarCorchetes(quitarEspacios(modificationUser.toString()));
+                if(conditional.equals("")){
+                modificationUser = "UsuarioDefault";
+                }
+                RESULT = quitarCorchetes(modificationUser.toString());:}
                 ;
 
 title::= initParametro TITULO COMILLAS MAYORQUE
-        CORCHETEA
         IDENTIFICADOR:title
-        CORCHETEC
         ENDPARAMETRO
-        {:RESULT = title.toString();:}
+        {:RESULT = quitarCorchetes(title.toString());:}
         ;
 
 site::= initParametro SITIO COMILLAS MAYORQUE
-        CORCHETEA
         IDENTIFICADOR:site
-        CORCHETEC
         ENDPARAMETRO
-        {:RESULT = site.toString();:}
+        {:RESULT = quitarCorchetes(site.toString());:}
         ;
 
 prePrincipal::= principal:principal
@@ -265,31 +298,24 @@ prePrincipal::= principal:principal
             ;
 
 principal::= initParametro PADRE COMILLAS MAYORQUE
-            CORCHETEA
             IDENTIFICADOR: principal
-            CORCHETEC
             ENDPARAMETRO
-            {:RESULT = principal.toString();:}
+            {:RESULT = quitarCorchetes(principal.toString());:}
             ;
 
 pageComponent::= initParametro PAGINA COMILLAS MAYORQUE
-                CORCHETEA
                 IDENTIFICADOR:pageComponent
-                CORCHETEC
                 ENDPARAMETRO
-                {:RESULT = pageComponent.toString();:}
+                {:RESULT = quitarCorchetes(pageComponent.toString());:}
                 ;
 
 classComponent::= initParametro CLASE COMILLAS MAYORQUE
-                CORCHETEA
                 atributClass:atributClass
-                CORCHETEC
                 ENDPARAMETRO
                 {:RESULT = atributClass;:}
                 ;
 
-atribut::= atributExtend:atributExtend atribut:atributs {:RESULT = atributs;:}
-        | atributExtend:atributExtend {:RESULT = atributExtend;:}
+atribut::= atributExtend:atributs{:RESULT = atributs;:}
         ;
 
 
@@ -304,91 +330,80 @@ attributsDeclared::= declaredTextAttribut:decltxt {:RESULT = decltxt;:}
                    | declaredMenuAttribut
                     ;
 
-declaredTextAttribut::= textAttribut:txtAt lineUpAttribut:lineAt colorAttribut:colorAt
-                    {:TextComponent textComponent = new TextComponent(txtAt, lineAt, colorAt);
+declaredTextAttribut::= textAttribut:txtAt initAttribut lineUpAttribut:lineAt initAttribut colorAttribut:colorAt
+                    {:TextComponent textComponent = new TextComponent(txtAt, lineAt, colorAt, 1);
                     RESULT = textComponent;:}
+                    | textAttribut:txt initAttribut lineUpAttribut:lineAt {:TextComponent textComponent = new TextComponent(txt, lineAt, 1); RESULT = textComponent; :}
+                    | textAttribut:txt initAttribut colorAttribut:color {:TextComponent textComponent = new TextComponent(txt, 1, color); RESULT = textComponent;:}
+                    | textAttribut:txt {:TextComponent textComponent = new TextComponent(txt, 1); RESULT = textComponent;:}
                     ;
 
 
-declaredImageAttribut::= originAttribut:originAt lineUpAttribut:lineAt heightAttribut:heightAt wideAttribut:wideAt
-                        {:ImageComponent imageComponent = new ImageComponent(originAt, lineAt, heightAt, wideAt);
+declaredImageAttribut::= originAttribut:originAt initAttribut lineUpAttribut:lineAt initAttribut heightAttribut:heightAt  initAttribut wideAttribut:wideAt
+                        {:ImageComponent imageComponent = new ImageComponent(originAt, lineAt, heightAt, wideAt, 2);
                         RESULT = imageComponent;:}
-                    ;
+//                        | originAttribut:originAt initAttribut heightAttribut:heightAt initAttribut wideAttribut:wideAt
+//                        {:ImageComponent imageComponent = new ImageComponent(originAt, heightAt, wideAt, 2); RESULT imageComponent;:}
+                        ;
 
-declaredVideoAttribut::= originAttribut:originAt heightAttribut:heightAt wideAttribut:wideAt
-                        {:VideoComponent videoComponent = new VideoComponent(originAt, heightAt, wideAt);
+declaredVideoAttribut::= originAttribut:originAt initAttribut heightAttribut:heightAt initAttribut wideAttribut:wideAt
+                        {:VideoComponent videoComponent = new VideoComponent(originAt, heightAt, wideAt, 3);
                         RESULT = videoComponent;:}
                     ;
 
 declaredMenuAttribut::= principalAttribut labelAttribut
                     ;
-atributClass::= TITULO:titulo {:RESULT = titulo.toString();:}
-                | PARRAFO:parrafo {:RESULT = parrafo.toString();:}
-                | IMAGEN:imagen {:RESULT = imagen.toString();:}
-                | VIDEO:video {:RESULT = video.toString();:}
-                | MENU:menu {:RESULT = menu.toString();:}
+atributClass::= TITULOCORCHETES:titulo {:RESULT = quitarCorchetes(titulo.toString());:}
+                | PARRAFO:parrafo {:RESULT = quitarCorchetes(parrafo.toString());:}
+                | IMAGEN:imagen {:RESULT = quitarCorchetes(imagen.toString());:}
+                | VIDEO:video {:RESULT = quitarCorchetes(video.toString());:}
+                | MENU:menu {:RESULT = quitarCorchetes(menu.toString());:}
                 ;
 
 textAttribut::= TEXTO COMILLAS MAYORQUE
-               CORCHETEA
                IDENTIFICADOR:textAttribut
-               CORCHETEC
                ENDATRIBUT
-               {:RESULT = textAttribut.toString();:}
+               {:RESULT = quitarCorchetes(textAttribut.toString());:}
                ;
 
 lineUpAttribut::=  ALINEACION COMILLAS MAYORQUE
-                  CORCHETEA
                   IDENTIFICADOR:lineUpAttribut
-                  CORCHETEC
                   ENDATRIBUT
-                  {:RESULT = lineUpAttribut.toString();:}
+                  {:RESULT = quitarCorchetes(lineUpAttribut.toString());:}
                   ;
 
 colorAttribut::=  COLOR COMILLAS MAYORQUE
-                 CORCHETEA
-                 HEXADECIMAL:hexadecimal
-                 CORCHETEC
+                 IDENTIFICADOR:hexadecimal
                  ENDATRIBUT
-                 {:RESULT = hexadecimal.toString();:}
+                 {:RESULT = quitarCorchetes(hexadecimal.toString());:}
                  ;
 
 originAttribut::=  ORIGEN COMILLAS MAYORQUE
-                 CORCHETEA
                  IDENTIFICADOR:originAttribut
-                 CORCHETEC
                  ENDATRIBUT
-                 {:RESULT = originAttribut.toString();:}
+                 {:RESULT = quitarCorchetes(originAttribut.toString());:}
                  ;
 
 heightAttribut::=  ALTURA COMILLAS MAYORQUE
-                 CORCHETEA
                  IDENTIFICADOR:heightAttribut
-                 CORCHETEC
                  ENDATRIBUT
-                 {:RESULT = heightAttribut.toString();:}
+                 {:RESULT = quitarCorchetes(heightAttribut.toString());:}
                  ;
 
 wideAttribut::=  ANCHO COMILLAS MAYORQUE
-                CORCHETEA
                 IDENTIFICADOR:wideAttribut
-                CORCHETEC
                 ENDATRIBUT
-                {:RESULT = wideAttribut.toString();:}
+                {:RESULT = quitarCorchetes(wideAttribut.toString());:}
                 ;
 
 principalAttribut::=  PADRE COMILLAS MAYORQUE
-                CORCHETEA
                 IDENTIFICADOR:principalAttribut
-                CORCHETEC
                 ENDATRIBUT
-                {:RESULT = principalAttribut.toString();:}
+                {:RESULT = quitarCorchetes(principalAttribut.toString());:}
                 ;
 
 labelAttribut::= ETIQUETAS COMILLAS MAYORQUE
-                CORCHETEA
                 IDENTIFICADOR
-                CORCHETEC
                 ENDATRIBUT
                 ;
 

@@ -3,7 +3,7 @@ package org.example.lexer;
 import java.io.*;
 import java_cup.runtime.*;
 import javax.swing.JOptionPane;
-import org.example.cup.*;
+import org.example.classes.Page;import org.example.cup.*;
 
 %%
 
@@ -18,8 +18,8 @@ import org.example.cup.*;
 lineTerminator = \r|\n|\r|n
 spaceWhite = [  |\t|\f ] | {lineTerminator}
 comillas = "\""
-COLOR_HEX = "#"([0-9a-fA-F]{6})
-IDENTIFICADOR = [^\[\n\r]*;
+IDENTIFICADOR = ("["[^\"\n\r]*"]")
+
 
 %eofval{
     return new Symbol(ParserSym.EOF);
@@ -39,8 +39,16 @@ IDENTIFICADOR = [^\[\n\r]*;
 "USUARIO_MODIFICACION"  {return new Symbol(ParserSym.USUARIO_MODIFICACION, yycolumn, yyline, yytext());}
 "BORRAR_SITIO_WEB"      {return new Symbol(ParserSym.BORRAR_SITIO_WEB, yycolumn, yyline, yytext());}
 "NUEVA_PAGINA"          {return new Symbol(ParserSym.NUEVA_PAGINA, yycolumn, yyline, yytext());}
+"ORIGEN"                {return new Symbol(ParserSym.ORIGEN, yycolumn, yyline, yytext());}
+"ALTURA"                {return new Symbol(ParserSym.ALTURA, yycolumn, yyline, yytext());}
+"ANCHO"                 {return new Symbol(ParserSym.ANCHO, yycolumn, yyline, yytext());}
 "TITULO"                {return new Symbol(ParserSym.TITULO, yycolumn, yyline, yytext());}
-"PARRAFO"               {return new Symbol(ParserSym.PARRAFO, yycolumn, yyline, yytext());}
+"[TITULO]"              {return new Symbol(ParserSym.TITULOCORCHETES, yycolumn, yyline, yytext());}
+"[PARRAFO]"             {return new Symbol(ParserSym.PARRAFO, yycolumn, yyline, yytext());}
+"[IMAGEN]"              {return new Symbol(ParserSym.IMAGEN, yycolumn, yyline, yytext());}
+"[VIDEO]"               {return new Symbol(ParserSym.VIDEO, yycolumn, yyline, yytext());}
+"[MENU]"                {return new Symbol(ParserSym.MENU, yycolumn, yyline, yytext());}
+"ALINEACION"            {return new Symbol(ParserSym.ALINEACION, yycolumn, yyline, yytext());}
 "SITIO"                 {return new Symbol(ParserSym.SITIO, yycolumn, yyline, yytext());}
 "PADRE"                 {return new Symbol(ParserSym.PADRE, yycolumn, yyline, yytext());}
 "MODIFICAR_PAGINA"      {return new Symbol(ParserSym.MODIFICAR_PAGINA, yycolumn, yyline, yytext());}
@@ -74,16 +82,12 @@ IDENTIFICADOR = [^\[\n\r]*;
 
 //Signs reserved
 "="                     {return new Symbol(ParserSym.IGUAL, yycolumn, yyline, yytext());}
-"<"                     {return new Symbol(ParserSym.MENORQUE, yycolumn, yyline, yytext());}
 ">"                     {return new Symbol(ParserSym.MAYORQUE, yycolumn, yyline, yytext());}
-"["                     {return new Symbol(ParserSym.CORCHETEA, yycolumn, yyline, yytext());}
-"]"                     {return new Symbol(ParserSym.CORCHETEC, yycolumn, yyline, yytext());}
 
 //regex
 {comillas}              {return new Symbol(ParserSym.COMILLAS, yycolumn, yyline, yytext());}
-{COLOR_HEX}             {return new Symbol(ParserSym.HEXADECIMAL, yycolumn, yyline, yytext());}
-{IDENTIFICADOR}         {return new Symbol(ParserSym.IDENTIFICADOR, yycolumn, yyline, yytext());}
 {spaceWhite}       {}
+{IDENTIFICADOR}         {return new Symbol(ParserSym.IDENTIFICADOR, yycolumn, yyline, yytext());}
 
 //Error
 .   {JOptionPane.showMessageDialog(null, "Ha ocurrido un error en la linea y columna " + yyline + " " + yycolumn +" en el token: " + yytext());}

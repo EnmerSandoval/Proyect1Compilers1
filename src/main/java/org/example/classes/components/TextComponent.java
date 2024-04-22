@@ -4,17 +4,36 @@ public class TextComponent extends Component{
     private String text;
     private String lineUp;
     private String color;
-    public TextComponent(String idComponent, String page, String classComponent, String text, String lineUp, String color) {
-        super(idComponent, page, classComponent);
+
+
+    public TextComponent(String idComponent, String page, String classComponent, String text, String lineUp, String color, int flag) {
+        super(idComponent, page, classComponent, flag);
         this.text = text;
         this.lineUp = lineUp;
         this.color = color;
     }
 
-    public TextComponent(String text, String lineUp, String color){
-        super();
+    public TextComponent(String text, String lineUp, String color, int flag){
+        super(flag);
         this.text = text;
         this.lineUp = lineUp;
+        this.color = color;
+    }
+
+    public TextComponent(String text, int flag){
+        super(flag);
+        this.text = text;
+    }
+
+    public  TextComponent(String text, String lineUp, int flag){
+        super(flag);
+        this.text = text;
+        this.lineUp = lineUp;
+    }
+
+    public  TextComponent(String text, int flag, String color){
+        super(flag);
+        this.text = text;
         this.color = color;
     }
 

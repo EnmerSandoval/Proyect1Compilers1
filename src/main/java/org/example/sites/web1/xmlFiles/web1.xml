@@ -1,0 +1,13 @@
+<accion nombre="NUEVO_SITIO_WEB">
+<parametros><parametro nombre="ID">
+[web1]</parametro>
+<parametro nombre="USUARIO_CREACION">
+[usuario1]</parametro>
+<parametro nombre="FECHA_CREACION">
+[[2024-04-14]]</parametro>
+<parametro nombre="FECHA_MODIFICACION">
+[2024-04-14]</parametro>
+<parametro nombre="USUARIO_MODIFICACION">
+[usuario1]</parametro>
+</parametros>
+</accion>

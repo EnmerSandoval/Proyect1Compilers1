@@ -6,18 +6,25 @@ public class ImageComponent extends Component{
     private String lineUp;
     private String height;
     private String wide;
-    public ImageComponent(String idComponent, String page, String classComponent, String origin, String lineUp, String height, String wide) {
-        super(idComponent, page, classComponent);
+    public ImageComponent(String idComponent, String page, String classComponent, String origin, String lineUp, String height, String wide, int flag) {
+        super(idComponent, page, classComponent, flag);
         this.origin = origin;
         this.lineUp = lineUp;
         this.height = height;
         this.wide = wide;
     }
 
-    public ImageComponent(String origin, String lineUp, String height, String wide){
-        super();
+    public ImageComponent(String origin, String lineUp, String height, String wide, int flag){
+        super(flag);
         this.origin = origin;
         this.lineUp = lineUp;
+        this.height = height;
+        this.wide = wide;
+    }
+
+    public ImageComponent(String origin, String height, String wide, int flag){
+        super(flag);
+        this.origin = origin;
         this.height = height;
         this.wide = wide;
     }
