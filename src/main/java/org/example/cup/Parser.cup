@@ -139,9 +139,16 @@ addNewSite::= NUEVO_SITIO_WEB COMILLAS MAYORQUE
             modificationUser:modificationUser
             ENDPARAMETROS
             ENDACCION
-            {:WebSite webSite = new WebSite(id.toString(), userCreator.toString(), creationDate.toString(), modificationDate.toString(), modificationUser.toString(), false);
+            {:WebSite webSite = new WebSite(id, userCreator.toString(), creationDate.toString(), modificationDate.toString(), modificationUser.toString(), false);
             RESULT = webSite;
             :}
+           |NUEVO_SITIO_WEB COMILLAS MAYORQUE
+                        INITPARAMETROS
+                        id:id
+                        ENDPARAMETROS
+                        ENDACCION
+                        {:WebSite webSite = new WebSite(id, "UserDefault", date.toString(), date.toString(),
+                        "UserDefault", false);:}
            ;
 
 
@@ -166,7 +173,15 @@ newPage::=  NUEVA_PAGINA COMILLAS MAYORQUE
             ENDPARAMETROS
             ENDACCION
             {:Page page = new Page(id, title, site, prePrincipal, userCreator, creationDate, modificationDate, modificationUser, 1); RESULT = page;:}
-            ;
+            | NUEVA_PAGINA COMILLAS MAYORQUE
+                          INITPARAMETROS
+                          id:id
+                          site:site
+                          prePrincipal:prePrincipal
+                          ENDPARAMETROS
+                          ENDACCION
+                          {:Page page = new Page(id, "", site, prePrincipal, "UsuarioFinal", date.toString(), date.toString(), "UsuarioDefault", 1); RESULT = page;:}
+                          ;
 
 deletePage::=  BORRAR_PAGINA COMILLAS MAYORQUE
                INITPARAMETROS

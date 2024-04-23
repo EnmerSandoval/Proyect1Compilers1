@@ -2,6 +2,7 @@ package org.example.server;
 
 import java.io.*;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 import org.example.classes.Page;
 import org.example.classes.WebSite;
@@ -38,9 +39,12 @@ public class Server implements Runnable{
         try{
             ServerSocket serverSocket = new ServerSocket(8080);
             while(true){
-            DataInputStream dataInputStream = new DataInputStream(serverSocket.accept().getInputStream());
-            String mensajeRecibido = dataInputStream.readUTF();
-            runParser(mensajeRecibido);
+                Socket clientSocket = serverSocket.accept();
+                DataInputStream dataInputStream = new DataInputStream(clientSocket.getInputStream());
+                String mensajeRecibido = dataInputStream.readUTF();
+                runParser(mensajeRecibido);
+                dataInputStream.close();
+                clientSocket.close();
             }
         }catch (Exception e){
             e.printStackTrace();

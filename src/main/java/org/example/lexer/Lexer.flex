@@ -34,6 +34,7 @@ IDENTIFICADOR = ("["[^\"\n\r]*"]")
 "NUEVO_SITIO_WEB"       {return new Symbol(ParserSym.NUEVO_SITIO_WEB, yycolumn, yyline, yytext());}
 "ID"                    {return new Symbol(ParserSym.ID, yycolumn, yyline, yytext());}
 "USUARIO_CREACION"      {return new Symbol(ParserSym.USUARIO_CREACION, yycolumn, yyline, yytext());}
+"MODIFICAR_COMPONENTE"  {return new Symbol(ParserSym.MODIFICAR_COMPONENTE, yycolumn, yyline, yytext());}
 "FECHA_CREACION"        {return new Symbol(ParserSym.FECHA_CREACION, yycolumn, yyline, yytext());}
 "FECHA_MODIFICACION"    {return new Symbol(ParserSym.FECHA_MODIFICACION, yycolumn, yyline, yytext());}
 "USUARIO_MODIFICACION"  {return new Symbol(ParserSym.USUARIO_MODIFICACION, yycolumn, yyline, yytext());}

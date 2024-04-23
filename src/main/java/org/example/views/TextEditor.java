@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.StringReader;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Map;
 import javax.swing.JFileChooser;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
@@ -20,22 +21,26 @@ import org.example.classes.WebSite;
 import org.example.classes.components.Component;
 import org.example.cup.Parser;
 import org.example.lexer.Lexer;
+import org.example.server.Socketreport;
 import org.example.util.WebSiteCopier;
+
 /**
  * @author enmer
  */
 public class TextEditor extends javax.swing.JFrame {
-    
+
     ArrayList<WebSite> webSites;
     ArrayList<Page> pages;
     ArrayList<Component> components;
+    private Socketreport socketreport;
 
     /**
      * Creates new form TextEditor
      */
-    public TextEditor() {
+    public TextEditor(Socketreport socketreport) {
         initComponents();
         this.setTitle("IDE");
+        this.socketreport = socketreport;
         setLocationRelativeTo(null);
         textAreaConsole.setEditable(false);
     }
@@ -61,6 +66,7 @@ public class TextEditor extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         textEditorArea = new javax.swing.JTextPane();
         clearText = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         files = new javax.swing.JMenu();
         openFileItem = new javax.swing.JMenuItem();
@@ -119,6 +125,13 @@ public class TextEditor extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("Report");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -137,12 +150,17 @@ public class TextEditor extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 667, Short.MAX_VALUE))))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 902, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtColumn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtLine, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(comandButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(sendTextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtColumn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtLine, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(comandButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(sendTextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(47, 47, 47)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(111, 111, 111))
         );
         jPanel1Layout.setVerticalGroup(
@@ -166,12 +184,18 @@ public class TextEditor extends javax.swing.JFrame {
                                 .addComponent(comandButton, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 418, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(clearText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(labelConsole, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
-                .addGap(18, 18, 18))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(clearText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(labelConsole, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
+                        .addGap(18, 18, 18))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(79, 79, 79))))
         );
 
         files.setText("Files");
@@ -241,13 +265,13 @@ public class TextEditor extends javax.swing.JFrame {
         try {
             Socket socket = new Socket(IP, port);
             String text = new String(textEditorArea.getText());
-            
+
             DataOutputStream data = new DataOutputStream(socket.getOutputStream());
             data.writeUTF(text);
-            socket.close();
+
         } catch (Exception e) {
             e.printStackTrace();
-        } 
+        }
 
 //        try {
 //            StringReader sr = new StringReader(textEditorArea.getText());
@@ -271,7 +295,6 @@ public class TextEditor extends javax.swing.JFrame {
 //            e.printStackTrace();
 //        }
 
-
     }//GEN-LAST:event_sendTextButtonActionPerformed
 
     private void comandButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comandButtonActionPerformed
@@ -285,46 +308,26 @@ public class TextEditor extends javax.swing.JFrame {
         textEditorArea.setText("");
     }//GEN-LAST:event_clearTextActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TextEditor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TextEditor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TextEditor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TextEditor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        imprimirContadorPorPagina();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new TextEditor().setVisible(true);
-            }
-        });
+    private void imprimirContadorPorPagina() {
+        Map<String, Integer> contadorPorPagina = socketreport.getContadorPorPagina();
+        textAreaConsole.setText(""); // Limpiar el área de texto
+        for (Map.Entry<String, Integer> entry : contadorPorPagina.entrySet()) {
+            textAreaConsole.append("Página: " + entry.getKey() + ", Contador: " + entry.getValue() + "\n");
+        }
     }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton clearText;
     private javax.swing.JButton comandButton;
     private javax.swing.JMenu editItem;
     private javax.swing.JMenu files;
+    private javax.swing.JButton jButton1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
